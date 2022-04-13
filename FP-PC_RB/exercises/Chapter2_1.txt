@@ -1,0 +1,16 @@
+import scala.annotation.tailrec
+  
+def fib(n: Int): Int = {
+	@tailrec
+	def go(i: Int, acc1: Int, acc2: Int, max: Int): Int = {
+	  if (i == max)
+		acc1 + acc2
+	  else
+		go(i+1, acc2, acc1+acc2, max)
+	}
+	go(1, 0, 1, n-1)
+}
+
+println(s"fib = ${fib(10)}")
+println(s"fib = ${fib(20)}")
+println(s"fib = ${fib(21)}")
