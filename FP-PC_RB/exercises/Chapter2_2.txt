@@ -1,0 +1,18 @@
+import scala.annotation.tailrec
+  
+def isSorted[A](arr: Array[A], ordered: (A,A) => Boolean) : Boolean = {
+	@tailrec
+	def loop(i: Int, arr: Array[A]): Boolean = {
+	  if (i+1 >= arr.length-1)
+		ordered(arr(i), arr(i+1))
+	  else if (ordered(arr(i), arr(i+1)))
+		loop(i+1, arr)
+	  else false
+	}
+	loop(0, arr)
+}
+
+val arr1 = Array(1,2,2,3,4,5)
+def isOrderedFn(i: Int, j: Int) = i <= j
+
+println(s"is array sorted: ${isSorted(arr1, isOrderedFn)}")
