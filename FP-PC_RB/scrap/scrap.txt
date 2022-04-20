@@ -30,3 +30,29 @@ def init[A](l: List[A]): List[A] = {
 init(List(1,2,3,4,5))
 
 init(List(1))
+
+----
+
+def foldRight[A,B](li: List[A], z:B)(f: (A,B)=>B): B = li match {
+  case Nil => z
+  case Cons(h, t) => f(h, foldRight(t, z)(f))
+}
+
+def sum2(li: List[Int]): Int = foldRight(li, 0)((a,b) => a+b)
+
+sum2(List(1,2,3,4))
+
+def product2(li: List[Int]): Int = foldRight(li, 1)((a,b) => a*b)
+
+def foldRightEarlyFail[A,B](li: List[A], z:B)(f: (A,B) => B)(shortCircuit: B=>Boolean, default: B): B = {
+  if (shortCircuit(z)) default
+  else li match {
+    case Nil => z
+    case Cons(h,t) => f(h, foldRightEarlyFail(t, z)(f)(shortCircuit, default))
+  }
+}
+
+def productEarlyFail(li:List[Int]): Int = foldRightEarlyFail(li, 1)((a,b) => a*b)(b => if (b==0) true else false, 0)
+
+productEarlyFail(List(1,2,3,4))
+productEarlyFail(List(1,2,0,4))
